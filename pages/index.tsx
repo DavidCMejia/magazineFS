@@ -2,10 +2,10 @@ import type { NextPage } from 'next'
 import { Form, Input, Button } from 'antd';
 import { useMutation } from '@apollo/client';
 import { CREATE_USER_MUTATION, QUERY_ALL_USERS } from './graphql/mutations';
-import Link from 'next/link';
-
 
 const Home: NextPage = () => {
+
+  const [form] = Form.useForm();
 
   const [createUser, { data, error }] = useMutation(CREATE_USER_MUTATION,
     {   // auto Refresh      
@@ -22,6 +22,7 @@ const Home: NextPage = () => {
         }
       }
     ));
+    form.resetFields(); 
   }  
   
     if (error) {
@@ -36,6 +37,7 @@ const Home: NextPage = () => {
   return (
 
     <Form
+      form={form}
       name="basic"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 8 }}
@@ -63,11 +65,8 @@ const Home: NextPage = () => {
         <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
 
           <Button type="primary" htmlType="submit">
-            <Link href="/">
-              Submit
-            </Link>
+              Submit            
           </Button>
-
         </Form.Item>
       </div>
     </Form>

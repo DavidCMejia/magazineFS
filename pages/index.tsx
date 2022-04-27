@@ -34,10 +34,22 @@ const Home: NextPage = () => {
     console.log(data);
     }
 
+    const validateMessages = {
+      required: '${label} is required!',
+      types: {
+        email: '${label} is not a valid email!',
+        number: '${label} is not a valid number!',
+      },
+      number: {
+        range: '${label} must be between ${min} and ${max}',
+      },
+    };
+
   return (
 
     <Form
       form={form}
+      validateMessages={validateMessages}
       name="basic"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 8 }}
@@ -50,7 +62,7 @@ const Home: NextPage = () => {
         <h1>CRUD Usuarios</h1>
         <br /><br />
 
-        <Form.Item label="Email" name="email">
+        <Form.Item label="Email" name="email" rules={[{ type: 'email' }]}>
           <Input />
         </Form.Item>
 

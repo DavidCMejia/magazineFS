@@ -1,19 +1,28 @@
 /* eslint-disable react/jsx-key */
 import { useMutation, useQuery } from '@apollo/client';
-import { Modal, Table } from 'antd';
+import { Button, Modal, Table } from 'antd';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { QUERY_ALL_USERS , DELETE_USER_MUTATION } from './graphql/mutations';
+import { useState } from 'react';
 
 function DisplayUsersData(){
 
+    const [isOpenMOdal, setIsOpenModal] = useState<boolean>(false);
     const {data, loading, error} = useQuery(QUERY_ALL_USERS);  
 
-    const [deleteUser] = useMutation(DELETE_USER_MUTATION,
+    const [ deleteUser ] = useMutation(DELETE_USER_MUTATION,
       {   // auto Refresh      
         refetchQueries: [ { query: QUERY_ALL_USERS } ]
       })
-     
+         
+      const handleOk = () => {
+        setIsOpenModal(false);
+      };
     
+      const handleCancel = () => {
+        setIsOpenModal(false);
+      };
+
     if (loading){
         return <h1>DATA IS LOADING</h1>
     }
@@ -49,11 +58,11 @@ function DisplayUsersData(){
           render: (_: any, record:any) => {
             return (
               <>
-                <EditOutlined
-                  onClick={() => {
-                    onEditUser(record);
-                  }}
-                />
+              <EditOutlined      
+              onClick={() => {
+                onEditUser(record);
+              }}
+              />
                 <DeleteOutlined
                   onClick={() => {
                     onDeleteUser(record);
@@ -66,7 +75,8 @@ function DisplayUsersData(){
         },
       ];
            
-      const onEditUser = (record: any) => {
+      const onEditUser = (record: any) => {  
+        setIsOpenModal(true);
         console.log("Editando usuario: ", record);
       }
       
@@ -114,10 +124,21 @@ function DisplayUsersData(){
              <div className="wrap">
                   <div className="main">
                     <Table 
-                    dataSource={dataTabla} 
-                    columns={columns}
-                    size='large'
-                    />
+                      dataSource={dataTabla} 
+                      columns={columns}
+                      size='large'
+                    />                                      
+                    <Modal 
+                      title="Basic Modal" 
+                      visible={isOpenMOdal}
+                      okText="Guardar"
+                      cancelText="Cancelar" 
+                      onOk={handleOk}
+                      onCancel={handleCancel}>
+                          <p>Some contents...</p>
+                          <p>Some contents...</p>
+                          <p>Some contents...</p>
+                    </Modal>
                 </div>
              </div>
              </>

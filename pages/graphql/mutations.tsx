@@ -40,7 +40,7 @@ mutation createUser(
     }
   } 
 }
-     
+
 `
 
 const UPDATE_USER_MUTATION = gql`
@@ -67,7 +67,7 @@ mutation updateuser (
       phoneNumber:$phoneNumber
       email:$email
 
-     
+
     }
   ) {
     id
@@ -75,7 +75,7 @@ mutation updateuser (
     docNumber
   }
 }
-     
+
 `
 
 export const DELETE_USER_MUTATION = gql`
@@ -93,5 +93,5 @@ mutation deleteUserbyId (
     }
   }
 }
-     
+
 `

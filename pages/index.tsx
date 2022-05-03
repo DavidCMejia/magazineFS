@@ -1,13 +1,13 @@
 import type { NextPage } from 'next'
-import { Form, Input, Button } from 'antd';
 import { useMutation } from '@apollo/client';
+import { Form, Input, Button } from 'antd';
 import { CREATE_USER_MUTATION, QUERY_ALL_USERS } from './graphql/mutations';
 
 const Home: NextPage = () => {
 
   const [ form ] = Form.useForm();
 
-  const [ createUser, { data, error } ] = useMutation(CREATE_USER_MUTATION,
+  const [ createUser, { data, error } ] = useMutation( CREATE_USER_MUTATION,
     {   // auto Refresh      
       refetchQueries: [ { query: QUERY_ALL_USERS } ]
     })

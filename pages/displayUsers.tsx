@@ -1,40 +1,47 @@
 import type { NextPage } from 'next';
-import { useMutation, useQuery } from '@apollo/client';
-import { Button, Form, Input, Modal, Table } from 'antd';
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { QUERY_ALL_USERS , DELETE_USER_MUTATION } from './graphql/mutations';
 import { useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { 
+  Form, 
+  Input, 
+  Modal, 
+  Table,
+} from 'antd';
+import { 
+  QUERY_ALL_USERS, 
+  UPDATE_USER_MUTATION, 
+  DELETE_USER_MUTATION, 
+} from './graphql/mutations';
 
 const DisplayUsersData: NextPage = () => {
 
-    const [ isOpenMOdal, setIsOpenModal ] = useState<boolean>(false);
-    const { data, loading, error } = useQuery(QUERY_ALL_USERS);
-    const [ form ] = Form.useForm();  
-    
-    const [ deleteUser ] = useMutation(DELETE_USER_MUTATION,
+    const [ isOpenMOdal, setIsOpenModal ] = useState<boolean>(false);    
+    const [ modalForm ] = Form.useForm();  
+
+    const { data, loading, error } = useQuery ( QUERY_ALL_USERS );
+    const [ updateUser ] = useMutation ( UPDATE_USER_MUTATION );
+    const [ deleteUser ] = useMutation ( DELETE_USER_MUTATION,
       {   // auto Refresh      
         refetchQueries: [ { query: QUERY_ALL_USERS } ]
       })
-
-      const handleOk = () => {
-        setIsOpenModal(false);
-      };
     
       const handleCancel = () => {
         setIsOpenModal(false);
       };
       const onEditUser = (values: any) => {
-        // createUser((
-        //   {
-        //     variables: {
-        //       email: values.email,
-        //       password: values.password,
-        //       cedula: values.cedula
-        //     }
-        //   }
-        // ));
-        console.log(values)
-        form.resetFields(); 
+        updateUser((
+          {
+            variables: {
+              id: values.id,
+              email: values.email,
+              password: values.password,
+              cedula: values.cedula
+            }
+          }
+        ));
+        modalForm.resetFields(); 
+        setIsOpenModal(false);
       }  
     if (loading){
         return <h1>DATA IS LOADING</h1>
@@ -65,9 +72,9 @@ const DisplayUsersData: NextPage = () => {
 
     const selectUser = (record: any) => {  
       setIsOpenModal(true);
-      //console.log("Editando usuario: ", record.email);
+      // console.log("Editando usuario: ", record);
 
-      form.setFieldsValue({
+      modalForm.setFieldsValue({
         id: record.id,
         email: record.email,
         password: record.password,
@@ -132,10 +139,8 @@ const DisplayUsersData: NextPage = () => {
             );
           },
         },
-      ];                    
+      ];               
 
-  
-              
         return ( 
             <>
 
@@ -149,10 +154,12 @@ const DisplayUsersData: NextPage = () => {
                       <Modal 
                         title="Editando Usuario"  
                         cancelText="Cancelar" 
+                        okText="Guardar"
                         visible={isOpenMOdal}
+                        onOk={modalForm.submit}
                         onCancel={handleCancel}>
                             <Form
-                            form={form}
+                            form={modalForm}
                             labelCol={{ span: 8 }}
                             wrapperCol={{ span: 8 }}
                             onFinish={onEditUser}
@@ -175,16 +182,8 @@ const DisplayUsersData: NextPage = () => {
                                 <Form.Item label="Cedula" name="cedula">
                                   <Input />
                                 </Form.Item>
-                                <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
-                                <Button
-                                type="primary" 
-                                htmlType="submit">
-                                    Editar            
-                                </Button>
-                                </Form.Item>
 
                           </Form>
-
                       </Modal>
                   </div>
               </div>

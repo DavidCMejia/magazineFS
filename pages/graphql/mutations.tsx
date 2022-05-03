@@ -1,7 +1,6 @@
 import { gql } from "@apollo/client"
 
-
-export const QUERY_ALL_USERS = gql`
+export const QUERY_ALL_USERS = gql `
     query Users {
         allUsers {
             edges {
@@ -14,84 +13,72 @@ export const QUERY_ALL_USERS = gql`
             }
         }
     }
-
 `
 
-export const CREATE_USER_MUTATION = gql`
-mutation createUser(
-      $email: String!
-      $password: String!
-      $cedula: String!
-) {
-  createUser(
-    input: {
-      user: {
-        email: $email   
-        password: $password
-        cedula: $cedula 
-      } 
-    }
-  ) 
-  {
-    user {
-      id
-      email
-      cedula
-    }
-  } 
-}
-
-`
-
-const UPDATE_USER_MUTATION = gql`
-mutation updateuser (
-  $uid: String!
-  $userType: String
-  $name: String
-  $docNumber: String     
-  $docType: String
-  $address: String
-  $phoneNumber: String
-  $email: String    
-) {
-  updateuser (
-    getOneuserInput: {
-      uid: $uid
-    }
-    updateuserInput: {
-      userType: $userType
-      name: $name
-      docNumber:$docNumber
-      docType:$docType
-      address:$address
-      phoneNumber:$phoneNumber
-      email:$email
-
-
-    }
+export const CREATE_USER_MUTATION = gql `
+  mutation createUser (
+        $email: String!
+        $password: String!
+        $cedula: String!
   ) {
-    id
-    name
-    docNumber
-  }
-}
-
-`
-
-export const DELETE_USER_MUTATION = gql`
-
-mutation deleteUserbyId (
-  $id: Int!
-) {
-  deleteUserById ( 
-    input: {
-      id: $id
-    }
-  ) {
+    createUser (
+      input: {
+        user: {
+          email: $email   
+          password: $password
+          cedula: $cedula 
+        } 
+      }
+    ) 
+    {
       user {
         id
+        email
+        cedula
+      }
+    } 
+  }
+`
+
+export const UPDATE_USER_MUTATION = gql `
+    mutation updateUserbyId (
+      $id: Int!
+      $email: String
+      $password: String
+      $cedula: String 
+    ) {  
+      updateUserById (
+        input: { 
+          userPatch: {
+            email: $email
+            password: $password
+            cedula: $cedula
+        }, 
+          id: $id          
+        }
+      ) {
+        user {
+          id
+          email
+          cedula
+        }
+      }
+    }
+`
+
+export const DELETE_USER_MUTATION = gql `
+
+  mutation deleteUserbyId (
+    $id: Int!
+  ) {
+    deleteUserById ( 
+      input: {
+        id: $id
+      }
+    ) {
+        user {
+          id
+      }
     }
   }
-}
-
 `

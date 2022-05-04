@@ -5,13 +5,15 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { 
   Form, 
   Input, 
+  message, 
   Modal, 
   Table,
 } from 'antd';
 import { 
   QUERY_ALL_USERS, 
   UPDATE_USER_MUTATION, 
-  DELETE_USER_MUTATION, 
+  DELETE_USER_MUTATION,
+  REFRESH_QUERY, 
 } from './graphql/mutations';
 
 const DisplayUsersData: NextPage = () => {
@@ -20,26 +22,34 @@ const DisplayUsersData: NextPage = () => {
     const [ modalForm ] = Form.useForm();  
 
     const { data, loading, error } = useQuery ( QUERY_ALL_USERS );
-    const [ updateUser ] = useMutation ( UPDATE_USER_MUTATION );
-    const [ deleteUser ] = useMutation ( DELETE_USER_MUTATION,
-      {   // auto Refresh      
-        refetchQueries: [ { query: QUERY_ALL_USERS } ]
-      })
+    const [ updateUser ] = useMutation ( UPDATE_USER_MUTATION, REFRESH_QUERY );
+    const [ deleteUser ] = useMutation ( DELETE_USER_MUTATION, REFRESH_QUERY );
+    
     
       const handleCancel = () => {
         setIsOpenModal(false);
       };
       const onEditUser = (values: any) => {
-        updateUser((
-          {
-            variables: {
-              id: values.id,
-              email: values.email,
-              password: values.password,
-              cedula: values.cedula
+        try {
+          updateUser((
+            {
+              variables: {
+                id: values.id,
+                email: values.email,
+                password: values.password,
+                cedula: values.cedula
+              }
             }
-          }
-        ));
+          ));
+          message.success('Usuario actualizado con exito');
+        } catch (error) {
+          message.error({
+            content: `Error al editar el usuario: ${error}`,
+            duration: 5,
+          });
+        }
+        
+        
         modalForm.resetFields(); 
         setIsOpenModal(false);
       }  
@@ -59,13 +69,21 @@ const DisplayUsersData: NextPage = () => {
         cancelText: "No",
         okType: "danger",
         onOk: () => {
-          deleteUser((
-            {
-              variables: {
-                id: record.id,
+          try {
+            deleteUser((
+              {
+                variables: {
+                  id: record.id,
+                }
               }
-            }
-          ));
+            ));
+            message.success('Registro eliminado con exito');
+          } catch (error) {
+            message.error({
+              content: `Error al eliminar el usuario: ${error}`,
+              duration: 5,
+            });
+          }
         },
       });
     }  
@@ -96,11 +114,7 @@ const DisplayUsersData: NextPage = () => {
                   )}
       )
       const columns = [
-        {
-          title: 'ID',
-          dataIndex: 'id',
-          key: 'id',
-        },
+        
         {
           title: 'Email',
           dataIndex: 'email',
@@ -165,7 +179,7 @@ const DisplayUsersData: NextPage = () => {
                             onFinish={onEditUser}
                             // onFinishFailed={onFinishFailed}
                           >                            
-                                <Form.Item label="ID" name="id">
+                                <Form.Item label="ID" name="id" hidden>
                                   <Input />
                                 </Form.Item>
                                 <Form.Item 

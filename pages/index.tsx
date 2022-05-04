@@ -1,35 +1,41 @@
 import type { NextPage } from 'next'
 import { useMutation } from '@apollo/client';
-import { Form, Input, Button } from 'antd';
-import { CREATE_USER_MUTATION, QUERY_ALL_USERS } from './graphql/mutations';
+import { Form, Input, Button, message } from 'antd';
+import { CREATE_USER_MUTATION, QUERY_ALL_USERS, REFRESH_QUERY } from './graphql/mutations';
 
 const Home: NextPage = () => {
 
   const [ form ] = Form.useForm();
 
-  const [ createUser, { data, error } ] = useMutation( CREATE_USER_MUTATION,
-    {   // auto Refresh      
-      refetchQueries: [ { query: QUERY_ALL_USERS } ]
-    })
+  const [ createUser, { data, error } ] = useMutation( CREATE_USER_MUTATION, REFRESH_QUERY );
 
   const handleSubmit = (values: any) => {
-    createUser((
-      {
-        variables: {
-          email: values.email,
-          password: values.password,
-          cedula: values.cedula
+    try {
+      createUser((
+        {
+          variables: {
+            email: values.email,
+            password: values.password,
+            cedula: values.cedula
+          }
         }
-      }
-    ));
+      ));
+      message.success('Registro creado con exito');
+    } catch (error) {
+      message.error({
+        content: `Error al guardar el registro: ${error}`,
+        duration: 5,
+      });
+      
+    }
+    
     form.resetFields(); 
   }  
   
     if (error) {
       console.log(error)
     }    
-    // console.log(values);
-
+    
     if (data){
     console.log(data);
     }
@@ -37,12 +43,8 @@ const Home: NextPage = () => {
     const validateMessages = {
       required: '${label} is required!',
       types: {
-        email: '${label} is not a valid email!',
-        number: '${label} is not a valid number!',
-      },
-      number: {
-        range: '${label} must be between ${min} and ${max}',
-      },
+        email: 'This is not a valid email!',
+      }
     };
 
   return (
@@ -62,22 +64,22 @@ const Home: NextPage = () => {
         <h1>CRUD Usuarios</h1>
         <br /><br />
 
-        <Form.Item label="Email" name="email" rules={[{ type: 'email' }]}>
-          <Input />
+        <Form.Item label="Email" name="email" rules={[{ type: 'email' }]} required>
+          <Input required/>
         </Form.Item>
 
-        <Form.Item label="Password" name="password">
-          <Input.Password />
+        <Form.Item label="Password" name="password" required>
+          <Input.Password required />
         </Form.Item>
 
-        <Form.Item label="Cedula" name="cedula">
-          <Input />
+        <Form.Item label="Cedula" name="cedula" required>
+          <Input required/>
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
 
           <Button type="primary" htmlType="submit">
-              Submit            
+              Guardar            
           </Button>
         </Form.Item>
       </div>

@@ -82,3 +82,8 @@ export const DELETE_USER_MUTATION = gql `
     }
   }
 `
+export const REFRESH_QUERY = {      
+      refetchQueries: [{ 
+          query: QUERY_ALL_USERS 
+        }]
+      }

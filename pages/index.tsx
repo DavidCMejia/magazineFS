@@ -1,29 +1,22 @@
 import type { NextPage } from 'next'
 import { useMutation } from '@apollo/client';
 import { Form, Input, Button, message } from 'antd';
-import { CREATE_USER_MUTATION, QUERY_ALL_USERS, REFRESH_QUERY } from './graphql/mutations';
+import { CREATE_MEMBER_MUTATION, REFRESH_QUERY } from './graphql/mutations';
+import Link from 'next/link';
 
 const Home: NextPage = () => {
 
   const [ form ] = Form.useForm();
 
-  const [ createUser, { data, error } ] = useMutation( CREATE_USER_MUTATION, REFRESH_QUERY );
+  const [ createUser, { data, error } ] = useMutation( CREATE_MEMBER_MUTATION, REFRESH_QUERY );
 
   const handleSubmit = (values: any) => {
     try {
-      createUser((
-        {
-          variables: {
-            email: values.email,
-            password: values.password,
-            cedula: values.cedula
-          }
-        }
-      ));
-      message.success('Registro creado con exito');
+      console.log(values)
+      message.success('Login exitoso');
     } catch (error) {
       message.error({
-        content: `Error al guardar el registro: ${error}`,
+        content: `El usuario o la contraseña son incorrectos`,
         duration: 5,
       });
       
@@ -31,7 +24,8 @@ const Home: NextPage = () => {
     
     form.resetFields(); 
   }  
-  
+
+   
     if (error) {
       console.log(error)
     }    
@@ -49,41 +43,7 @@ const Home: NextPage = () => {
 
   return (
 
-    <Form
-      form={form}
-      validateMessages={validateMessages}
-      name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 8 }}
-      onFinish={handleSubmit}
-      size="large"
-    >
-
-      <br />
-      <div className="wrap">
-        <h1>CRUD Usuarios</h1>
-        <br /><br />
-
-        <Form.Item label="Email" name="email" rules={[{ type: 'email' }]} required>
-          <Input required/>
-        </Form.Item>
-
-        <Form.Item label="Password" name="password" required>
-          <Input.Password required />
-        </Form.Item>
-
-        <Form.Item label="Cedula" name="cedula" required>
-          <Input required/>
-        </Form.Item>
-
-        <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
-
-          <Button type="primary" htmlType="submit">
-              Guardar            
-          </Button>
-        </Form.Item>
-      </div>
-    </Form>
+    <p>BIENVENIDO INDEX</p>
 
   )
 }

@@ -1,40 +1,56 @@
 import { gql } from "@apollo/client"
 
-export const QUERY_ALL_USERS = gql `
-    query Users {
-        allUsers {
+export const QUERY_ALL_MEMBERS = gql `
+    query Members {
+        allMembers {
             edges {
                 node {
                     id
+                    user
                     email
                     password
-                    cedula
+                    name
+                    lastname
+                    address
+                    phone
+                    membertype
                 }
             }
         }
     }
 `
 
-export const CREATE_USER_MUTATION = gql `
-  mutation createUser (
+export const CREATE_MEMBER_MUTATION = gql `
+  mutation createMember (
+        $user: String!
         $email: String!
         $password: String!
-        $cedula: String!
+        $name: String!
+        $lastname: String!
+        $address: String!
+        $phone: String!
+        $membertype: String!
+
   ) {
-    createUser (
+    createMember (
       input: {
-        user: {
+        member: {
+          user: $user
           email: $email   
           password: $password
-          cedula: $cedula 
+          name: $name
+          lastname: $lastname
+          address: $address
+          phone: $phone
+          membertype: $membertype
         } 
       }
     ) 
     {
-      user {
+      member {
         id
+        user
         email
-        cedula
       }
     } 
   }
@@ -84,6 +100,6 @@ export const DELETE_USER_MUTATION = gql `
 `
 export const REFRESH_QUERY = {      
       refetchQueries: [{ 
-          query: QUERY_ALL_USERS 
+          query: QUERY_ALL_MEMBERS
         }]
       }

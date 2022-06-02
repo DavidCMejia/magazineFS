@@ -101,18 +101,18 @@ const DisplayUsersData: NextPage = () => {
       });      
     }
 
-    const dataTabla =   
-    data.allUsers.edges.map(
-      (edge:any) => {
-          return (                        
-                    {
-                      id: edge.node.id,
-                      email: edge.node.email, 
-                      password: edge.node.password,
-                      cedula: edge.node.cedula,
-                    }                        
-                  )}
-      )
+    // const dataTabla =   
+    // data.allUsers.edges.map(
+    //   (edge:any) => {
+    //       return (                        
+    //                 {
+    //                   id: edge.node.id,
+    //                   email: edge.node.email, 
+    //                   password: edge.node.password,
+    //                   cedula: edge.node.cedula,
+    //                 }                        
+    //               )}
+    //   )
       const columns = [
         
         {
@@ -161,7 +161,7 @@ const DisplayUsersData: NextPage = () => {
               <div className="wrap">
                     <div className="main">
                       <Table 
-                        dataSource={dataTabla} 
+                        // dataSource={dataTabla} 
                         columns={columns}
                         size='large'
                       />                                      

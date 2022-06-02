@@ -1,2 +1,2 @@
 Arrancar el Postgraphile: 
-npx postgraphile -c "postgres://postgres:postgres@localhost:5432/cruddb" --watch --enhance-graphiql -o --cors
+npx postgraphile -c "postgres://postgres:postgres@localhost:5432/magazinedb" --watch --enhance-graphiql -o --cors

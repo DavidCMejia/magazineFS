@@ -12,7 +12,7 @@ const credentialsAuth: NextApiHandler = (request, response) => {
       email: "student@platzi.com",
       image: ""
     }
-    console.log(platziUser)
+    // console.log(platziUser)
     return response.status(200).json(platziUser)
   }
 

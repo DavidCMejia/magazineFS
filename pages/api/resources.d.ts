@@ -1,3 +1,9 @@
+type User = {
+  name: string
+  email: string
+  image: string
+}
+
 type Json =
   | string
   | number
@@ -51,8 +57,3 @@ type PaginatedList<T> = {
   items: T[]
 }
 
-type User = {
-  name: string
-  email: string
-  image: string
-}

@@ -1,6 +1,7 @@
 import { Layout, Menu } from 'antd';
 import { NextPage } from 'next';
 import Link from 'next/link';
+import { Toparea } from './Toparea';
 
 const { Header, Content, Footer } = Layout;
 
@@ -11,30 +12,31 @@ const LayoutModel: NextPage<MyComponentProps> = ({children}) => {
 
     return (
         <Layout className="layout">
+
             <Header>
                 <div className="logo" />
-                <Menu 
-                mode="horizontal"
-                theme="dark"
-                >
-                <Menu.Item>
+                <Menu mode="horizontal" theme="dark">
+                    <Menu.Item>
+                        <Toparea />
+                    </Menu.Item>
+                    <Menu.Item>
                         <Link href="/"> Home</Link>
                     </Menu.Item>
                     <Menu.Item>
                         <Link href="/Login"> Login</Link>
                     </Menu.Item>
                     <Menu.Item>
-                      <Link href="/Register"> Register</Link>
+                        <Link href="/Register"> Register</Link>
                     </Menu.Item>
                     <Menu.Item>
-                    <Link href="/Premium"> Premium</Link>
+                        <Link href="/Premium"> Premium</Link>
                     </Menu.Item>
-      
+
                 </Menu>
             </Header>
             <Content style={{ padding: '0 50px' }}>
                 <div className="site-layout-content">
-                {children}
+                    {children}
                 </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>FOOTER</Footer>

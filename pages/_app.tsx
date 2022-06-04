@@ -5,7 +5,6 @@ import DisplayUsersData from './displayUsers';
 import { Row, Col } from 'antd';
 import LayoutModel from './Componentes/navbar';
 import { SessionProvider as AuthProvider} from 'next-auth/react'
-import { Toparea } from './Componentes/Toparea';
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -21,7 +20,6 @@ return (
 <>
 <AuthProvider session={pageProps.session}>
     <ApolloProvider client={client}>
-    <Toparea />
         <LayoutModel>            
             <Row justify="space-around">
                 <Col span={8}>

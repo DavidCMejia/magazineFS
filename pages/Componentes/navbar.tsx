@@ -1,7 +1,7 @@
 import { Layout, Menu } from 'antd';
 import { NextPage } from 'next';
 import Link from 'next/link';
-import { Toparea } from './Toparea';
+import { LoginArea } from './LoginArea';
 
 const { Header, Content, Footer } = Layout;
 
@@ -17,7 +17,7 @@ const LayoutModel: NextPage<MyComponentProps> = ({children}) => {
                 <div className="logo" />
                 <Menu mode="horizontal" theme="dark">
                     <Menu.Item>
-                        <Toparea />
+                        <LoginArea />
                     </Menu.Item>
                     <Menu.Item>
                         <Link href="/"> Home</Link>

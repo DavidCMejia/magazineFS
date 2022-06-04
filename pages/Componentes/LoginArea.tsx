@@ -3,7 +3,7 @@ import { NextPage } from "next";
 import { signIn, signOut, useSession } from 'next-auth/react' ;
 
 
-export const Toparea:NextPage = () => {
+export const LoginArea:NextPage = () => {
     return (
         <Loginlogout />
     )
